@@ -58,274 +58,315 @@
 </template>
 
 <script>
-export default {
+export default
+  {
 
-  data() {
-    return {
-      playMode: '2 players',
-      twoPlayerMode: true,
-      aiMode: false,
-      aiIsPlaying: false,
-      gameStarted: false,
-      gameEnded: false,
-      animStarted: false,
-      animFinished: false,
-      ai: true,
-      turnsPlayed: 0,
-      finalValue: 0,
-      winner: '',
-      playedTiles:[],
-      players: [
-        {
-          id: 1,
-          name: '',
-          isPlaying: true,
-        },
-        {
-          id: 2,
-          name: '',
-          isPlaying: false,
-        }
-      ],
-      buttons: [
-        {
-          id: 0,
-        },
-        {
-          id: 1,
-        },
-        {
-          id: 2,
-        },
-        {
-          id: 3,
-        },
-        {
-          id: 4,
-        },
-        {
-          id: 5,
-        },
-        {
-          id: 6,
-        },
-        {
-          id: 7,
-        },
-        {
-          id: 8,
-        },
-      ]
-    }
-  },
-
-  methods: {
-    PlayModeSelected() {
-      switch (this.playMode) {
-        case "2 players":
-          this.aiMode = false;
-          return this.twoPlayerMode = true;
-        case "Ai":
-          this.twoPlayerMode = false;
-          return this.aiMode = true;
+    data() {
+      return {
+        playMode: '2 players',
+        twoPlayerMode: true,
+        aiMode: false,
+        aiIsPlaying: false,
+        gameStarted: false,
+        gameEnded: false,
+        animStarted: false,
+        animFinished: false,
+        ai: true,
+        turnsPlayed: 0,
+        winner: '',
+        playedTiles: [],
+        players: [
+          {
+            id: 1,
+            name: '',
+            isPlaying: true,
+          },
+          {
+            id: 2,
+            name: '',
+            isPlaying: false,
+          }
+        ],
+        buttons: [
+          {
+            id: 0,
+          },
+          {
+            id: 1,
+          },
+          {
+            id: 2,
+          },
+          {
+            id: 3,
+          },
+          {
+            id: 4,
+          },
+          {
+            id: 5,
+          },
+          {
+            id: 6,
+          },
+          {
+            id: 7,
+          },
+          {
+            id: 8,
+          },
+        ]
       }
     },
-    StartGame() {
-      this.animStarted = true
-      setTimeout(() => {
-        this.gameStarted = true;
+
+    methods:
+    {
+      PlayModeSelected() {
+        switch (this.playMode) {
+          case "2 players":
+            this.aiMode = false;
+            return this.twoPlayerMode = true;
+          case "Ai":
+            this.twoPlayerMode = false;
+            return this.aiMode = true;
+        }
+      },
+      StartGame() {
+        this.animStarted = true
         setTimeout(() => {
-          this.animFinished = true;
-          this.isBoxLoaded = true;
-        }, 1800);
-      }, 1500)
-    },
-    IsClicked(id) {
-      const buttonEl = this.$refs.buttons;
-      console.log(this.aiMode)
-      if (this.twoPlayerMode) {
-        if (this.players[0].isPlaying) {
-          if (buttonEl[id].innerHTML != 'X' && buttonEl[id].innerHTML != 'O') {
-            buttonEl[id].innerHTML = 'O'
-            this.ChangeTurn();
-            this.CheckForWinner(buttonEl, this.players[0].name);
-          } else {
-            alert('cant put that there');
-          }
-        } else if (this.players[1].isPlaying) {
-          if (buttonEl[id].innerHTML != 'X' && buttonEl[id].innerHTML != 'O') {
-            buttonEl[id].style.color = 'red';
-            buttonEl[id].innerHTML = 'X'
-            this.ChangeTurn();
-            this.CheckForWinner(buttonEl, this.players[1].name);
-          }
-          else {
-            alert('cant put that there');
-          }
-        }
-      }
-      else if (this.aiMode) {
-        if (this.players[0].isPlaying) {
-          if (buttonEl[id].innerHTML != 'X' && buttonEl[id].innerHTML != 'O') {
-            buttonEl[id].innerHTML = 'O'
-            this.ChangeTurn();
-            this.CheckForWinner(buttonEl, this.players[0].name);
-          } else {
-            alert('cant put that there');
+          this.gameStarted = true;
+          setTimeout(() => {
+            this.animFinished = true;
+            this.isBoxLoaded = true;
+          }, 1800);
+        }, 1500)
+      },
+      IsClicked(id) {
+        const buttonEl = this.$refs.buttons;
+        console.log(this.aiMode)
+        if (this.twoPlayerMode) {
+          if (this.players[0].isPlaying) {
+            if (buttonEl[id].innerHTML != 'X' && buttonEl[id].innerHTML != 'O') {
+              buttonEl[id].innerHTML = 'O'
+              this.ChangeTurn();
+              this.CheckForWinner(buttonEl, this.players[0].name);
+            } else {
+              alert('cant put that there');
+            }
+          } else if (this.players[1].isPlaying) {
+            if (buttonEl[id].innerHTML != 'X' && buttonEl[id].innerHTML != 'O') {
+              buttonEl[id].style.color = 'red';
+              buttonEl[id].innerHTML = 'X'
+              this.ChangeTurn();
+              this.CheckForWinner(buttonEl, this.players[1].name);
+            }
+            else {
+              alert('cant put that there');
+            }
           }
         }
-      }
+        else if (this.aiMode) {
+          if (this.players[0].isPlaying) {
+            if (buttonEl[id].innerHTML != 'X' && buttonEl[id].innerHTML != 'O') {
+              buttonEl[id].innerHTML = 'O'
+              this.CheckForWinner(buttonEl, this.players[0].name);
+              this.ChangeTurn();
+            } else {
+              alert('cant put that there');
+            }
+          }
+        }
 
-    },
-    ChangeTurn() {
-      if (this.twoPlayerMode) {
-        if (this.players[0].isPlaying) {
-          this.players[0].isPlaying = false;
-          this.players[1].isPlaying = true;
-          this.turnsPlayed++;
-          console.log(this.turnsPlayed);
-        } else {
-          this.players[1].isPlaying = false;
-          this.players[0].isPlaying = true;
-          this.turnsPlayed++;
-          console.log(this.turnsPlayed);
+      },
+      ChangeTurn() {
+        if (this.twoPlayerMode) {
+          if (this.players[0].isPlaying) {
+            this.turnsPlayed++;
+            this.players[0].isPlaying = false;
+            this.players[1].isPlaying = true;
+            console.log(this.turnsPlayed);
+          } else {
+            this.turnsPlayed++;
+            this.players[1].isPlaying = false;
+            this.players[0].isPlaying = true;
+            console.log(this.turnsPlayed);
+          }
         }
-      }
-      else if (this.aiMode) {
-        if (this.players[0].isPlaying) {
-          this.players[0].isPlaying = false;
-          this.aiIsPlaying = true;
+        else if (this.aiMode) {
+          if (this.players[0].isPlaying) {
+            this.turnsPlayed++;
+            this.players[0].isPlaying = false;
+            this.aiIsPlaying = true;
+            this.AiTurn();
+          }
+          else if (this.aiIsPlaying) {
+            this.aiIsPlaying = false;
+            this.players[0].isPlaying = true;
+          }
+        }
+      },
+      AiTurn() {
+        let randomPlayValue = this.randomValue();
+        if (!this.gameEnded) {
+          switch (randomPlayValue) {
+            case 1:
+              this.AiPlayRandomSlot();
+              break;
+            case 2:
+              if (this.turnsPlayed < 2) {
+                this.AiPlayRandomSlot();
+                break;
+              }
+              else this.AiBlockRowForPlayer(0, 3);
+              break;
+          }
+        }
+      },
+      AiPlayRandomSlot() {
+        const buttonEl = this.$refs.buttons;
+        const min = 0;
+        const max = 9;
+        let randomIndex = Math.floor(Math.random() * (max - min) + min);
+        if (buttonEl[randomIndex].innerHTML != 'X' && buttonEl[randomIndex].innerHTML != 'O') {
+          buttonEl[randomIndex].style.color = 'red';
+          buttonEl[randomIndex].innerHTML = 'X'
+          this.ChangeTurn();
+          this.CheckForWinner(buttonEl, 'A.I');
           this.turnsPlayed++;
+        }
+        else {
           this.AiTurn();
         }
-        else if (this.aiIsPlaying) {
-          this.aiIsPlaying = false;
-          this.players[0].isPlaying = true;
+      },
+      AiBlockRowForPlayer(minValue, maxValue) {
+        const buttonEl = this.$refs.buttons;
+        let playedValue = 0;
+        let noPlayedTile = null;
+        console.log('we are at start')
+        for (; minValue < maxValue; minValue++) {
+          console.log('we are in the loop')
+          console.log(minValue);
+          if (buttonEl[minValue].innerHTML === 'O') {
+            playedValue++;
+          }
+          else if (buttonEl[minValue].innerHTML != 'X' && buttonEl[minValue].innerHTML != 'O') {
+            noPlayedTile = minValue;
+          }
         }
-      }
-    },
-    AiTurn() {
-      this.randomValue();
-      const buttonEl = this.$refs.buttons;
-      let randomPlayValue = this.finalValue;
-      switch (randomPlayValue) {
-        case 1:
-          const min = 0;
-          const max = 9;
-          let randomIndex = Math.floor(Math.random() * (max - min) + min);
-          if (buttonEl[randomIndex].innerHTML != 'X' && buttonEl[randomIndex].innerHTML != 'O') {
-            buttonEl[randomIndex].style.color = 'red';
-            buttonEl[randomIndex].innerHTML = 'X'
-            this.ChangeTurn();
-            break;
+        if (playedValue >= 2 && noPlayedTile != null) {
+          console.log(noPlayedTile);
+          buttonEl[noPlayedTile].style.color = 'red';
+          buttonEl[noPlayedTile].innerHTML = 'X';
+          this.ChangeTurn();
+          this.CheckForWinner(buttonEl, 'A.I');
+          this.turnsPlayed++;
+        }
+        else {
+
+          if (maxValue < 9) {
+            minValue = maxValue;
+            maxValue = maxValue += 3;
+            console.log('we are restaring')
+            this.AiBlockRowForPlayer(minValue, maxValue);
           }
-          else {
-            this.AiTurn();
-            break;
+          else
+            this.AiPlayRandomSlot(buttonEl);
+        }
+      },
+      CheckForWinner(row, nameOfPlayer) {
+        //Check for winning conditons
+
+        //players one
+        //horizontal winning condition
+        if (this.turnsPlayed != 9) {
+          if (row[0].innerHTML == 'O' && row[1].innerHTML == 'O' && row[2].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
           }
-        case 2:
-          
-          buttonEl.forEach(element => 
-          {
-            if (element.innerHTML === 'O') {
-              console.log(this.playedTiles);
-            }
-          });
-          
-          break;
-      }
+          if (row[3].innerHTML == 'O' && row[4].innerHTML == 'O' && row[5].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[6].innerHTML == 'O' && row[7].innerHTML == 'O' && row[8].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          //vertical winning condtion
+          if (row[0].innerHTML == 'O' && row[3].innerHTML == 'O' && row[6].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[1].innerHTML == 'O' && row[4].innerHTML == 'O' && row[7].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[2].innerHTML == 'O' && row[5].innerHTML == 'O' && row[8].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          //diagonal winning condition
+          if (row[0].innerHTML == 'O' && row[4].innerHTML == 'O' && row[8].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[2].innerHTML == 'O' && row[4].innerHTML == 'O' && row[6].innerHTML == 'O') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
 
-    },
-    CheckForWinner(row, nameOfPlayer) {
-      //Check for winning conditons
+          //PLAYERs TWO win conditions
+          //horizontal winning condition
+          if (row[0].innerHTML == 'X' && row[1].innerHTML == 'X' && row[2].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[3].innerHTML == 'X' && row[4].innerHTML == 'X' && row[5].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[6].innerHTML == 'X' && row[7].innerHTML == 'X' && row[8].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
 
-      //players one
-      //horizontal winning condition
-      if (row[0].innerHTML == 'O' && row[1].innerHTML == 'O' && row[2].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
+          //vertical winning condtion
+          if (row[0].innerHTML == 'X' && row[3].innerHTML == 'X' && row[6].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[1].innerHTML == 'X' && row[4].innerHTML == 'X' && row[7].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[2].innerHTML == 'X' && row[5].innerHTML == 'X' && row[8].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          //diagonal winning condition
+          if (row[0].innerHTML == 'X' && row[4].innerHTML == 'X' && row[8].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+          if (row[2].innerHTML == 'X' && row[4].innerHTML == 'X' && row[6].innerHTML == 'X') {
+            this.winner = nameOfPlayer;
+            this.gameEnded = true;
+          }
+        }
+        else if (this.turnsPlayed == 9) {
+          console.log('Game ended in draw')
+          this.winner = 'DRAW'
+          this.gameEnded = true;
+        }
+      },
+      randomValue() {
+        const min = 1;
+        const max = 3;
+        return Math.floor(Math.random() * (max - min) + min);
       }
-      if (row[3].innerHTML == 'O' && row[4].innerHTML == 'O' && row[5].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[6].innerHTML == 'O' && row[7].innerHTML == 'O' && row[8].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      //vertical winning condtion
-      if (row[0].innerHTML == 'O' && row[3].innerHTML == 'O' && row[6].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[1].innerHTML == 'O' && row[4].innerHTML == 'O' && row[7].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[2].innerHTML == 'O' && row[5].innerHTML == 'O' && row[8].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      //diagonal winning condition
-      if (row[0].innerHTML == 'O' && row[4].innerHTML == 'O' && row[8].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[2].innerHTML == 'O' && row[4].innerHTML == 'O' && row[6].innerHTML == 'O') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-
-      //PLAYERs TWO win conditions
-      //horizontal winning condition
-      if (row[0].innerHTML == 'X' && row[1].innerHTML == 'X' && row[2].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[3].innerHTML == 'X' && row[4].innerHTML == 'X' && row[5].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[6].innerHTML == 'X' && row[7].innerHTML == 'X' && row[8].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-
-      //vertical winning condtion
-      if (row[0].innerHTML == 'X' && row[3].innerHTML == 'X' && row[6].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[1].innerHTML == 'X' && row[4].innerHTML == 'X' && row[7].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[2].innerHTML == 'X' && row[5].innerHTML == 'X' && row[8].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      //diagonal winning condition
-      if (row[0].innerHTML == 'X' && row[4].innerHTML == 'X' && row[8].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (row[2].innerHTML == 'X' && row[4].innerHTML == 'X' && row[6].innerHTML == 'X') {
-        this.winner = nameOfPlayer;
-        this.gameEnded = true;
-      }
-      if (this.turnsPlayed == 9) {
-        console.log('Game ended in draw')
-        this.gameEnded = true;
-      }
-    },
-    randomValue() {
-      const min = 1;
-      const max = 3;
-
-      this.finalValue = Math.floor(Math.random() * (max - min) + min);
     }
-  },
-}
+  }
+
+
 </script>
 
 
@@ -470,6 +511,7 @@ export default {
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  opacity: 0.5;
 }
 
 .endgame-name
