@@ -1,7 +1,16 @@
 <template>
-  <div v-if="gameEnded" class="score-screen">
-    <h2 class="endgame-name">{{winner}} Har vunnit spelet! GRATTIS </h2>
-  </div>
+  <transition name="fadeIn">
+    <div v-if="gameEnded" class="score-screen">
+      <h1 class="score-screen-heading">Tre i rad!</h1>
+      <div>
+        <h2 class="goodgame-heading">Bra spelat!</h2>
+        <h4 class="endgame-name"> VINNARE: {{winner}}</h4>
+      </div>
+      <div class="button-container">
+        <button @click="Quit()" class="quit-btn">Tillbaka till meny</button>
+      </div>
+    </div>
+  </transition>
 
   <!-- Start game screen -->
   <transition name="up">
@@ -35,13 +44,12 @@
           </section>
         </div>
       </section>
-
       <button @click="StartGame()" class="startgame-btn">Spela</button>
     </div>
   </transition>
 
   <!-- Gameplay Bord -->
-  <transition name="up">
+  <transition :name="animName">
     <div v-if="gameStarted" class="wrapper">
       <div class="playing-field">
         <div v-for="player in players" :key="player.id">
@@ -60,9 +68,9 @@
 <script>
 export default
   {
-
     data() {
       return {
+        animName: 'up',
         playMode: '2 players',
         twoPlayerMode: true,
         aiMode: false,
@@ -118,7 +126,6 @@ export default
         ]
       }
     },
-
     methods:
     {
       PlayModeSelected() {
@@ -242,10 +249,7 @@ export default
         const buttonEl = this.$refs.buttons;
         let playedValue = 0;
         let noPlayedTile = null;
-        console.log('we are at start')
         for (; minValue < maxValue; minValue++) {
-          console.log('we are in the loop')
-          console.log(minValue);
           if (buttonEl[minValue].innerHTML === 'O') {
             playedValue++;
           }
@@ -254,7 +258,6 @@ export default
           }
         }
         if (playedValue >= 2 && noPlayedTile != null) {
-          console.log(noPlayedTile);
           buttonEl[noPlayedTile].style.color = 'red';
           buttonEl[noPlayedTile].innerHTML = 'X';
           this.ChangeTurn();
@@ -266,7 +269,6 @@ export default
           if (maxValue < 9) {
             minValue = maxValue;
             maxValue = maxValue += 3;
-            console.log('we are restaring')
             this.AiBlockRowForPlayer(minValue, maxValue);
           }
           else
@@ -275,81 +277,80 @@ export default
       },
       CheckForWinner(row, nameOfPlayer) {
         //Check for winning conditons
-
         //players one
         //horizontal winning condition
         if (this.turnsPlayed != 9) {
           if (row[0].innerHTML == 'O' && row[1].innerHTML == 'O' && row[2].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[3].innerHTML == 'O' && row[4].innerHTML == 'O' && row[5].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[6].innerHTML == 'O' && row[7].innerHTML == 'O' && row[8].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           //vertical winning condtion
           if (row[0].innerHTML == 'O' && row[3].innerHTML == 'O' && row[6].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[1].innerHTML == 'O' && row[4].innerHTML == 'O' && row[7].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[2].innerHTML == 'O' && row[5].innerHTML == 'O' && row[8].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           //diagonal winning condition
           if (row[0].innerHTML == 'O' && row[4].innerHTML == 'O' && row[8].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[2].innerHTML == 'O' && row[4].innerHTML == 'O' && row[6].innerHTML == 'O') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
 
           //PLAYERs TWO win conditions
           //horizontal winning condition
           if (row[0].innerHTML == 'X' && row[1].innerHTML == 'X' && row[2].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[3].innerHTML == 'X' && row[4].innerHTML == 'X' && row[5].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[6].innerHTML == 'X' && row[7].innerHTML == 'X' && row[8].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
 
           //vertical winning condtion
           if (row[0].innerHTML == 'X' && row[3].innerHTML == 'X' && row[6].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[1].innerHTML == 'X' && row[4].innerHTML == 'X' && row[7].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[2].innerHTML == 'X' && row[5].innerHTML == 'X' && row[8].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           //diagonal winning condition
           if (row[0].innerHTML == 'X' && row[4].innerHTML == 'X' && row[8].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
           if (row[2].innerHTML == 'X' && row[4].innerHTML == 'X' && row[6].innerHTML == 'X') {
             this.winner = nameOfPlayer;
-            this.gameEnded = true;
+            this.GameEnded();
           }
         }
         else if (this.turnsPlayed == 9) {
@@ -358,10 +359,71 @@ export default
           this.gameEnded = true;
         }
       },
+      GameEnded() {
+        this.gameStarted = false;
+        this.gameEnded = true;
+        this.animName = 'fadeIn';
+      },
       randomValue() {
         const min = 1;
         const max = 3;
         return Math.floor(Math.random() * (max - min) + min);
+      },
+      Quit() {
+        this.animName = 'up',
+          this.playMode = '2 players',
+          this.twoPlayerMode = true,
+          this.aiMode = false,
+          this.aiIsPlaying = false,
+          this.gameStarted = false,
+          this.gameEnded = false,
+          this.animStarted = false,
+          this.animFinished = false,
+          this.ai = true,
+          this.turnsPlayed = 0,
+          this.winner = '',
+          this.playedTiles = [],
+          this.players = [
+            {
+              id: 1,
+              name: '',
+              isPlaying: true,
+            },
+            {
+              id: 2,
+              name: '',
+              isPlaying: false,
+            }
+          ],
+          this.buttons = [
+            {
+              id: 0,
+            },
+            {
+              id: 1,
+            },
+            {
+              id: 2,
+            },
+            {
+              id: 3,
+            },
+            {
+              id: 4,
+            },
+            {
+              id: 5,
+            },
+            {
+              id: 6,
+            },
+            {
+              id: 7,
+            },
+            {
+              id: 8,
+            },
+          ]
       }
     }
   }
@@ -502,6 +564,7 @@ export default
   cursor: pointer;
 }
 
+/* End game window */
 .score-screen
 {
   position: absolute;
@@ -511,19 +574,61 @@ export default
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  opacity: 0.5;
+  border-radius: 100px;
+  opacity: 0.9;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-evenly;
+  color: white;
+}
+
+.score-screen h1
+{
+
+  font-size: 80px;
+  transform: skew(30deg);
+  text-decoration: underline;
+  text-underline-offset: 20px;
 }
 
 .endgame-name
 {
-  position: inherit;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  color: white;
-
+  font-size: 10;
 }
 
+.button-container
+{
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.button-container button
+{
+  border: none;
+  border-radius: 100px;
+  padding: 30px;
+  font-size: 20px;
+  width: 250px;
+}
+
+.button-container button:hover
+{
+  outline: solid 2px white;
+  outline-offset: 4px;
+}
+
+.button-container .play-again-btn
+{
+  background: greenyellow;
+}
+
+.button-container .quit-btn
+{
+  background: red;
+}
+
+/* Animations */
 .up-enter-active,
 .up-leave-active
 {
@@ -535,5 +640,44 @@ export default
 {
   opacity: 0;
   transform: translateY(-100%)
+}
+
+.fadeIn-enter-active,
+.fadein.up-leave-active
+{
+  transition: all 1s ease;
+
+}
+
+.fadeIn-enter-from,
+.fadeIn-leave-to
+{
+  opacity: 0;
+}
+
+.fadeIn-enter-active .goodgame-heading,
+.fadeIn-leave-active .goodgame-heading
+{
+  transition: all 1.5s ease;
+}
+
+.fadeIn-enter-from .goodgame-heading,
+.fadeIn-leave-to .goodgame-heading
+{
+  transform: translateX(-100px);
+  opacity: 0;
+}
+
+.fadeIn-enter-active .endgame-name,
+.fadein.up-leave-active .endgame-name
+{
+  transition: all 1.5s ease;
+}
+
+.fadeIn-enter-from .endgame-name,
+.fadeIn-leave-to .endgame-name
+{
+  transform: translateX(100px);
+  opacity: 0;
 }
 </style>
