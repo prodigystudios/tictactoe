@@ -12,6 +12,7 @@
     </div>
   </transition>
 
+
   <!-- Start game screen -->
   <transition name="up">
     <div class="main-container" v-if="!animStarted">
@@ -27,24 +28,29 @@
 
       <!-- if ai mode is selected we show this -->
       <section v-if="aiMode">
-        <div class="player-name-container" v-for="player in players" :key="player.id">
-          <section class="name-container-section" v-if="player.id === 1">
-            <label for players1Name>Spelare {{player.id}}</label>
-            <input type="text" placeholder="Namn" v-model="player.name">
-          </section>
-        </div>
+        <form @submit.prevent="StartGame()">
+          <div class="player-name-container" v-for="player in players" :key="player.id">
+            <section class="name-container-section" v-if="player.id === 1">
+              <label for players1Name>Spelare {{player.id}}</label>
+              <input type="text" placeholder="Namn" required v-model="player.name">
+            </section>
+          </div>
+          <input class="startgame-btn" type="submit" />
+        </form>
       </section>
 
       <!-- if 2 player mode is selected we show this -->
       <section v-if="twoPlayerMode">
-        <div class="player-name-container" v-for="player in players" :key="player.id">
-          <section class="name-container-section">
-            <label for players1Name>Spelare {{player.id}}</label>
-            <input type="text" placeholder="Namn" v-model="player.name">
-          </section>
-        </div>
+        <form @submit.prevent="StartGame()">
+          <div class="player-name-container" v-for="player in players" :key="player.id">
+            <section class="name-container-section">
+              <label for players1Name>Spelare {{player.id}}</label>
+              <input ref="playerInput" type="text" placeholder="Namn" required v-model="player.name">
+            </section>
+          </div>
+          <input class="startgame-btn" type="submit" />
+        </form>
       </section>
-      <button @click="StartGame()" class="startgame-btn">Spela</button>
     </div>
   </transition>
 
@@ -277,82 +283,54 @@ export default
       },
       CheckForWinner(row, nameOfPlayer) {
         //Check for winning conditons
-        //players one
         //horizontal winning condition
         if (this.turnsPlayed != 9) {
-          if (row[0].innerHTML == 'O' && row[1].innerHTML == 'O' && row[2].innerHTML == 'O') {
+          if (row[0].innerHTML == 'O' && row[1].innerHTML == 'O' && row[2].innerHTML == 'O' ||
+            row[0].innerHTML == 'X' && row[1].innerHTML == 'X' && row[2].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
-          if (row[3].innerHTML == 'O' && row[4].innerHTML == 'O' && row[5].innerHTML == 'O') {
+          if (row[3].innerHTML == 'O' && row[4].innerHTML == 'O' && row[5].innerHTML == 'O' ||
+            row[3].innerHTML == 'X' && row[4].innerHTML == 'X' && row[5].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
-          if (row[6].innerHTML == 'O' && row[7].innerHTML == 'O' && row[8].innerHTML == 'O') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-          //vertical winning condtion
-          if (row[0].innerHTML == 'O' && row[3].innerHTML == 'O' && row[6].innerHTML == 'O') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-          if (row[1].innerHTML == 'O' && row[4].innerHTML == 'O' && row[7].innerHTML == 'O') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-          if (row[2].innerHTML == 'O' && row[5].innerHTML == 'O' && row[8].innerHTML == 'O') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-          //diagonal winning condition
-          if (row[0].innerHTML == 'O' && row[4].innerHTML == 'O' && row[8].innerHTML == 'O') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-          if (row[2].innerHTML == 'O' && row[4].innerHTML == 'O' && row[6].innerHTML == 'O') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-
-          //PLAYERs TWO win conditions
-          //horizontal winning condition
-          if (row[0].innerHTML == 'X' && row[1].innerHTML == 'X' && row[2].innerHTML == 'X') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-          if (row[3].innerHTML == 'X' && row[4].innerHTML == 'X' && row[5].innerHTML == 'X') {
-            this.winner = nameOfPlayer;
-            this.GameEnded();
-          }
-          if (row[6].innerHTML == 'X' && row[7].innerHTML == 'X' && row[8].innerHTML == 'X') {
+          if (row[6].innerHTML == 'O' && row[7].innerHTML == 'O' && row[8].innerHTML == 'O' ||
+            row[6].innerHTML == 'X' && row[7].innerHTML == 'X' && row[8].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
 
           //vertical winning condtion
-          if (row[0].innerHTML == 'X' && row[3].innerHTML == 'X' && row[6].innerHTML == 'X') {
+          if (row[0].innerHTML == 'O' && row[3].innerHTML == 'O' && row[6].innerHTML == 'O' ||
+            row[0].innerHTML == 'X' && row[3].innerHTML == 'X' && row[6].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
-          if (row[1].innerHTML == 'X' && row[4].innerHTML == 'X' && row[7].innerHTML == 'X') {
+          if (row[1].innerHTML == 'O' && row[4].innerHTML == 'O' && row[7].innerHTML == 'O' ||
+            row[1].innerHTML == 'X' && row[4].innerHTML == 'X' && row[7].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
-          if (row[2].innerHTML == 'X' && row[5].innerHTML == 'X' && row[8].innerHTML == 'X') {
+          if (row[2].innerHTML == 'O' && row[5].innerHTML == 'O' && row[8].innerHTML == 'O' ||
+            row[2].innerHTML == 'X' && row[5].innerHTML == 'X' && row[8].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
+
           //diagonal winning condition
-          if (row[0].innerHTML == 'X' && row[4].innerHTML == 'X' && row[8].innerHTML == 'X') {
+          if (row[0].innerHTML == 'O' && row[4].innerHTML == 'O' && row[8].innerHTML == 'O' ||
+            row[0].innerHTML == 'X' && row[4].innerHTML == 'X' && row[8].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
-          if (row[2].innerHTML == 'X' && row[4].innerHTML == 'X' && row[6].innerHTML == 'X') {
+          if (row[2].innerHTML == 'O' && row[4].innerHTML == 'O' && row[6].innerHTML == 'O' ||
+            row[2].innerHTML == 'X' && row[4].innerHTML == 'X' && row[6].innerHTML == 'X') {
             this.winner = nameOfPlayer;
             this.GameEnded();
           }
         }
+        //if all tiles has been played and no winner is presented, end game in draw
         else if (this.turnsPlayed == 9) {
           console.log('Game ended in draw')
           this.winner = 'DRAW'
