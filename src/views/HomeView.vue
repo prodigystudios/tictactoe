@@ -1,18 +1,4 @@
 <template>
-  <transition name="fadeIn">
-    <div v-if="gameEnded" class="score-screen">
-      <h1 class="score-screen-heading">Tre i rad!</h1>
-      <div>
-        <h2 class="goodgame-heading">Bra spelat!</h2>
-        <h4 class="endgame-name"> VINNARE: {{winner}}</h4>
-      </div>
-      <div class="button-container">
-        <button @click="Quit()" class="quit-btn">Tillbaka till meny</button>
-      </div>
-    </div>
-  </transition>
-
-
   <!-- Start game screen -->
   <transition name="up">
     <div class="main-container" v-if="!animStarted">
@@ -24,7 +10,6 @@
           <option value="Ai">A.I</option>
         </select>
       </div>
-
 
       <!-- if ai mode is selected we show this -->
       <section v-if="aiMode">
@@ -55,7 +40,7 @@
   </transition>
 
   <!-- Gameplay Bord -->
-  <transition :name="animName">
+  <transition name="fadeIn">
     <div v-if="gameStarted" class="wrapper">
       <div class="playing-field">
         <div v-for="player in players" :key="player.id">
@@ -69,6 +54,21 @@
       </div>
     </div>
   </transition>
+
+  <!-- score screen -->
+  <transition name="fadeIn">
+    <div v-if="gameEnded" class="score-screen">
+      <h1 class="score-screen-heading">TIC TAC TOE!</h1>
+      <div>
+        <h2 class="goodgame-heading">Bra spelat!</h2>
+        <h4 class="endgame-name"> VINNARE: {{winner}}</h4>
+      </div>
+      <div class="button-container">
+        <button @click="Quit()" class="quit-btn">Tillbaka till meny</button>
+      </div>
+    </div>
+  </transition>
+
 </template>
 
 <script>
@@ -504,26 +504,27 @@ export default
 {
   display: flex;
   justify-content: center;
+  flex-wrap: wrap;
 }
 
 .playing-field
 {
-  max-width: 1010px;
-  height: 700px;
+  width: 1000px;
+  height: 1000px;
 }
 
 .row
 {
   display: flex;
   flex-wrap: wrap;
-  gap: 1px;
+  justify-content: center;
 }
 
 .box
 {
-  width: 333px;
-  height: 231.6px;
-  border: 1px solid black;
+  width: 250px;
+  height: 250px;
+  border: 3px solid black;
 }
 
 .bord-btn
@@ -532,12 +533,57 @@ export default
   height: inherit;
   font-size: 100px;
   background: white;
+  border: none;
 }
 
 .bord-btn:hover
 {
   background: greenyellow;
   cursor: pointer;
+}
+
+.box:first-child
+{
+  border-left: none;
+  border-top: none;
+}
+
+.box:nth-child(2)
+{
+  border-top: none;
+}
+
+.box:nth-child(3)
+{
+  border-top: none;
+  border-right: none;
+}
+
+.box:nth-child(4)
+{
+  border-left: none;
+}
+
+.box:nth-child(6)
+{
+  border-right: none;
+}
+
+.box:nth-child(7)
+{
+  border-bottom: none;
+  border-left: none;
+}
+
+.box:nth-child(8)
+{
+  border-bottom: none;
+}
+
+.box:nth-child(9)
+{
+  border-right: none;
+  border-bottom: none;
 }
 
 /* End game window */
@@ -618,6 +664,8 @@ export default
   transform: translateY(-100%)
 }
 
+
+/* fade in anim for gameplay bord */
 .fadeIn-enter-active,
 .fadein.up-leave-active
 {
@@ -631,6 +679,131 @@ export default
   opacity: 0;
 }
 
+/* fade-ins for all the tiles */
+/* top row */
+.fadeIn-enter-active .box:first-child,
+.fadeIn-leave-active .box:first-child
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:first-child,
+.fadeIn-leave-to .box:first-child
+{
+  transform: translateX(-250px);
+  opacity: 0;
+}
+
+.fadeIn-enter-active .box:nth-child(2),
+.fadeIn-leave-active .box:nth-child(2)
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:nth-child(2),
+.fadeIn-leave-to .box:nth-child(2)
+{
+
+  transform: translateY(-250px);
+  opacity: 0;
+}
+
+.fadeIn-enter-active .box:nth-child(3),
+.fadeIn-leave-active .box:nth-child(3)
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:nth-child(3),
+.fadeIn-leave-to .box:nth-child(3)
+{
+  transform: translateX(250px);
+  opacity: 0;
+}
+
+/* middle row */
+.fadeIn-enter-active .box:nth-child(4),
+.fadeIn-leave-active .box:nth-child(4)
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:nth-child(4),
+.fadeIn-leave-to .box:nth-child(4)
+{
+  transform: translateX(-250px);
+  opacity: 0;
+}
+
+.fadeIn-enter-active .box:nth-child(5),
+.fadeIn-leave-active .box:nth-child(5)
+{
+  transition: all 1s ease;
+  transition-delay: 0.4s;
+}
+
+.fadeIn-enter-from .box:nth-child(5),
+.fadeIn-leave-to .box:nth-child(5)
+{
+  opacity: 0;
+}
+
+.fadeIn-enter-active .box:nth-child(6),
+.fadeIn-leave-active .box:nth-child(6)
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:nth-child(6),
+.fadeIn-leave-to .box:nth-child(6)
+{
+  transform: translateX(250px);
+  opacity: 0;
+}
+
+/* bottom row */
+
+.fadeIn-enter-active .box:nth-child(7),
+.fadeIn-leave-active .box:nth-child(7)
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:nth-child(7),
+.fadeIn-leave-to .box:nth-child(7)
+{
+  transform: translateX(-250px);
+  opacity: 0;
+}
+
+.fadeIn-enter-active .box:nth-child(8),
+.fadeIn-leave-active .box:nth-child(8)
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:nth-child(8),
+.fadeIn-leave-to .box:nth-child(8)
+{
+
+  transform: translateY(250px);
+  opacity: 0;
+}
+
+.fadeIn-enter-active .box:nth-child(9),
+.fadeIn-leave-active .box:nth-child(9)
+{
+  transition: all 1s ease;
+}
+
+.fadeIn-enter-from .box:nth-child(9),
+.fadeIn-leave-to .box:nth-child(9)
+{
+  transform: translateX(250px);
+  opacity: 0;
+}
+
+/* fade in for score-screen */
 .fadeIn-enter-active .goodgame-heading,
 .fadeIn-leave-active .goodgame-heading
 {
@@ -655,5 +828,83 @@ export default
 {
   transform: translateX(100px);
   opacity: 0;
+}
+
+
+@media screen and (max-width: 1000px) {
+  .score-screen {
+    min-width: 100%;
+    height: 100%;
+    border-radius: 0px;
+  }
+  .score-screen h1 {
+    font-size: 25px;
+  }
+}
+
+@media screen and (max-width: 800px)
+{
+
+
+  .selected-mode-container select {
+    width:100%;
+  }
+  .box
+  {
+    width: 190px;
+    height: 190px;
+  }
+}
+
+@media screen and (max-width: 615px)
+{
+  .main-container {
+    border:none;
+  }
+  .box
+  {
+    width: 150px;
+    height: 150px;
+  }
+}
+
+@media screen and (max-width: 480px)
+{
+  .box
+  {
+    width:132px;
+    height: 132px;
+  }
+}
+
+@media screen and (max-width:425px)
+{
+  .name-container-section input[type=text] {
+    width: 100%;
+  }
+  input[type=submit] {
+    width: 100%;
+  }
+  .playing-field
+  {
+    height: 800px;
+  }
+
+  .row
+  {
+    margin-top: 100px;
+  }
+
+  .box
+  {
+    width: 130px;
+    height: 130px;
+  }
+}
+@media screen and (max-width:375px) {
+  .box {
+    width:90px;
+    height: 90px;
+  }
 }
 </style>
